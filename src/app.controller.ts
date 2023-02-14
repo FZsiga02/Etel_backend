@@ -1,6 +1,8 @@
-import { Body, Controller, Get, Post, Render } from '@nestjs/common';
+/* eslint-disable prettier/prettier */
+import { Body, Controller, Delete, Get, Param, Post, Render } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { AppService } from './app.service';
+import { Etel } from './etel.entity';
 
 @Controller()
 export class AppController {
@@ -13,5 +15,17 @@ export class AppController {
   @Render('index')
   index() {
     return { message: 'Welcome to the homepage' };
+  }
+
+  @Get('/etel')
+  listEtelek() {
+    const etelRepo = this.dataSource.getRepository(Etel);
+    return etelRepo.find();
+  }
+
+  @Delete('/etel/:id')
+  deleteEtel(@Param('id') id: number) {
+    const etelRepo = this.dataSource.getRepository(Etel)
+    etelRepo.delete(id)
   }
 }
