@@ -3,6 +3,7 @@ import { Body, Controller, Delete, Get, Param, Post, Render } from '@nestjs/comm
 import { DataSource } from 'typeorm';
 import { AppService } from './app.service';
 import { Etel } from './etel.entity';
+import NewEtelDto from './newEtelDto';
 
 @Controller()
 export class AppController {
@@ -27,5 +28,12 @@ export class AppController {
   deleteEtel(@Param('id') id: number) {
     const etelRepo = this.dataSource.getRepository(Etel)
     etelRepo.delete(id)
+  }
+
+  @Post('/etel')
+  async newEtel(@Body() etel: NewEtelDto) {
+      const etelRepo = this.dataSource.getRepository(Etel)
+      etelRepo.save(etel)
+      return etel;
   }
 }
